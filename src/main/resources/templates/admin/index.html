@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://wwww.thymeleaf.org"
+  layout:decorate="~{master.html}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Administrar Películas | Pelis Trailer</title>
+
+</head>
+
+<body>
+
+  <div layout:fragment="content">
+    <h2>Películas</h2>
+
+    <div class="text-end">
+      <a href="/admin/peliculas/nuevo" class="btn btn-primary mb-3"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1h-2z"/>
+        <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708l3-3z"/>
+      </svg>
+        Nueva Pelicula
+      </a>
+    </div>
+
+    <table class="table table-hover">
+      <thead class="p-3 mb-2 bg-danger text-white">
+        <tr>
+          <th></th>
+          <th class="align-middle text-center">Pelicula</th>
+          <th class="align-middle text-center">Fecha de estreno</th>
+          <th class="align-middle text-center">Acción</th>
+        <tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr th:each="pelicula : ${peliculas}" th:object="${pelicula}">
+          <td style="width: 150px;">
+            <a th:href="@{/assets/{filename}(filename=*{rutaPortada})}" data-fancybox>
+              <img th:src="@{/assets/{filename}(filename=*{rutaPortada})}" alt="" class="img-thumbnail w-100">
+            </a>
+          </td>
+          <td>
+            <div th:text="*{titulo}" class="fs-5 fw-bold"></div>
+            <p th:text="*{sinopsis}" class="text-justify"></p>
+            <div>
+              <span class="badge rounded-pill bg-secondary text-light me-1" th:each="genero : *{generos}"
+                th:text="${genero.titulo}"></span>
+            </div>
+          </td>
+          <td th:text="*{#temporals.format(fechaEstreno, 'dd/MM/yyyy')}" class="fw-bold text-center align-middle"></td>
+          <td class="text-end align-middle w-25 p-3">
+            <a th:href="@{/admin/peliculas/{id}/editar(id=*{id})}" class="btn btn-primary mb-3"><svg
+                xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-gear-fill align-middle"
+                viewBox="0 0 16 16">
+                <path
+                  d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+              </svg> Editar</a>
+            <a href="javascript:void(0)" class="btn btn-primary mb-3"
+              th:onclick="'eliminarPelicula(' + *{id} + ')'"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                <path
+                  d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+              </svg> Eliminar</a>
+            <form th:id="'eliminarPeliculaForm' + *{id}" th:action="@{/admin/peliculas/{id}/eliminar(id=*{id})}"
+              method="post" class="d-none"></form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row mt-5" th:with="page=${peliculas}">
+      <div class="col-sm-6">
+        <div sd:pagination-summary></div>
+      </div>
+      <div class="col-sm-6">
+        <nav>
+          <ul class="pagination" sd:pagination="full"></ul>
+        </nav>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div layout:fragment="scripts">
+    <script>
+      function eliminarPelicula(id) {
+        if (!confirm('¿Estás seguro de eliminar esta película?')) {
+          return;
+        }
+        $('#eliminarPeliculaForm' + id).submit();
+      }
+    </script>
+  </div>
+
+</body>
+
+</html>
